@@ -35,7 +35,7 @@ export const update = async (req: Request, res: Response) => {
         
         if(req.body.title) {
             todo.title = req.body.title;
-        }
+        };
 
         if(req.body.done) {
             switch(req.body.done.toLowerCase()) {
@@ -47,8 +47,8 @@ export const update = async (req: Request, res: Response) => {
                 case "0":
                     todo.done = false;
                     break;
-            }
-        }
+            };
+        };
 
         await todo.save();
         res.json({
@@ -60,9 +60,16 @@ export const update = async (req: Request, res: Response) => {
         return res.json({
             error: "Item não encontrado."
         });
-    }
+    };
 }
 
 export const remove = async (req: Request, res: Response) => {
+    let id: string = req.params.id;
 
+    let todo = await Todo.findByPk(id);
+    if(todo) {
+        await todo.destroy();
+    };
+
+    res.json({});
 }
